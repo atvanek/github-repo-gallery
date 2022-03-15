@@ -1,10 +1,12 @@
 const overview = document.querySelector(".overview");
 const username = "atvanek";
+const repoList = document.querySelector(".repo-list");
+
 
 const getGitInfo = async function(){
       const gitInfo = await fetch(`https://api.github.com/users/${username}`);
       const data = await gitInfo.json();
-      console.log(data);
+      //console.log(data);
       displayGitInfo(data);
 };
 
@@ -32,7 +34,32 @@ const displayGitInfo = function(data){
     </div> `;
 
     overview.append(div);
+    getRepoInfo();
 
 
 
 };
+
+
+
+const getRepoInfo = async function(){
+      const repoInfo = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+      const repoData = await repoInfo.json();
+      //console.log(repoData);
+      displayRepoInfo(repoData);
+};
+
+
+const displayRepoInfo = function(repoData){
+
+      for(const repo of repoData){
+            const li = document.createElement("li");
+
+            li.classList.add("repo");
+            li.innerHTML = ` <h3> ${repo.name} </h3>`;
+            repoList.append(li);
+      }
+};
+
+
+      
